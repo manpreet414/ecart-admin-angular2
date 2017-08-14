@@ -1,0 +1,49 @@
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav panel-body">
+            <li class="nav-item"> <a class="nav-link" style="cursor: not-allowed;" title="Dashboard"><i class="icon-dashboard"></i><span> Dashboard</span></a> </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.market}">
+                <a (click)="layout('market')" [ngClass]="{'active': active == 'market'}" class="nav-link" title="Market"> <i class="fa fa-map-signs"></i> <span>Market</span> </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.logisticPartners}">
+                <a class="nav-link" (click)="layout('logistic-partners')" [ngClass]="{'active': active == 'logistic-partners'}" title="Logistic Partners"> <i class="icon-logistic-partner"></i> <span>Logistic Partners</span> </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.channelPartners}">
+                <a (click)="layout('channel-partners')" [ngClass]="{'active': active == 'channel-partners'}" class="nav-link" title="Channel Partners"> <i class="icon-channel-partner"></i> <span>Channel Partners</span> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="cursor: not-allowed;" href="javascript:void(0)" title="Orders"> <i class="icon-order"></i> <span>Orders</span> </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.category}">
+                <a (click)="layout('category')" [ngClass]="{'active': active == 'category'}" class="nav-link" title="Category"> <i class="fa fa-list-alt"></i> <span>Category</span></a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.manufacturer}">
+                <a (click)="layout('manufacturer')" [ngClass]="{'active': active == 'manufacturer'}" class="nav-link" title="Manufacturer"> <i class="fa fa-building"></i> <span>Manufacturer</span></a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.roles}">
+                <a (click)="layout('roles')" [ngClass]="{'active': active == 'roles'}" class="nav-link" title="Roles"> <i class="fa fa-list-ul"></i> <span>Roles</span> </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.adminUsers}">
+                <a (click)="layout('admin-users')" [ngClass]="{'active': active == 'admin-users'}" class="nav-link" title="Admin Users"> <i class="icon-user"></i> <span>Admin Users</span> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="cursor: not-allowed;" href="javascript:void(0)" title="Settings"> <i class="icon-settings"></i> <span>Settings</span> </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.smsGroups}">
+                <a (click)="layout('sms-groups')" [ngClass]="{'active': active == 'sms-groups'}" class="nav-link" title="SMS Groups"> <i class="icon-sms"></i> <span>SMS Groups</span> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="cursor: not-allowed;" href="javascript:void(0)" title="Email"> <i class="fa fa-envelope-o"></i> <span>Email</span> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="cursor: not-allowed;" href="javascript:void(0)" title="Cart"> <i class="icon-cart"></i> <span>Cart</span> </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'not-allowed-custom':!access.blogs}">
+                <a (click)="layout('blogs')" [ngClass]="{'active': active == 'blogs'}" class="nav-link" title="Blogs"> <i class="icon-post"></i> <span>Blogs</span> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="cursor: not-allowed;" href="javascript:void(0)" title="Reports"> <i class="icon-Shape-1194"></i> <span>Reports</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>

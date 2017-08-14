@@ -1,0 +1,77 @@
+<div class="top-nav-header">
+    <div class="row">
+        <div class="col-lg-2 col-md-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-green" (click)="layout('crops')" [ngClass]="{'active': active == 'crops'}">
+                <div class="inner" title="Crops" [ngClass]="{'not-allowed-custom':!access.crops}">
+                    <p>Crops</p>
+                </div>
+                <div class="icon">
+                    <i class="icon-Shape-13"></i>
+                </div>
+            </div>
+        </div>
+        <!-- col -->
+        <div class="col-lg-2 col-md-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua" (click)="layout('inputs')" [ngClass]="{'active': active == 'inputs'}">
+                <div class="inner" title="Inputs" [ngClass]="{'not-allowed-custom':!access.inputs}">
+                    <p>Inputs</p>
+                </div>
+                <div class="icon">
+                    <i class="icon-Shape-18"></i>
+                </div>
+            </div>
+        </div>
+        <!-- col -->
+        <div class="col-lg-2 col-md-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-red" (click)="layout('equipments')" [ngClass]="{'active': active == 'equipments'}">
+                <div class="inner" title="Equipments" [ngClass]="{'not-allowed-custom':!access.equipments}">
+                    <p>Equipments</p>
+                </div>
+                <div class="icon">
+                    <i class="icon-Shape-19"></i>
+                </div>
+            </div>
+        </div>
+        <!-- col -->
+        <div class="col-lg-2 col-md-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow" (click)="layout('land')" [ngClass]="{'active': active == 'land'}">
+                <div class="inner" title="Lands" [ngClass]="{'not-allowed-custom':!access.land}">
+                    <p>Lands</p>
+                </div>
+                <div class="icon">
+                    <i class="icon-Shape-21"></i>
+                </div>
+            </div>
+        </div>
+        <!-- col -->
+        <!-- col -->
+        <div class="col-lg-2 col-md-4 col-6">
+            <!-- small box -->
+            <div class="small-box bg-purple">
+                <div class="inner" title="Services" style="cursor:not-allowed;">
+                    <p>Services</p>
+                </div>
+                <div class="icon">
+                    <i class="icon-Shape-22"></i>
+                </div>
+            </div>
+        </div>
+        <!-- col -->
+        <!-- col -->
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="small-box bg-teal" (click)="layout('users');" [ngClass]="{'active': active == 'users'}">
+                <div class="inner" title="Users" [ngClass]="{'not-allowed-custom':!access.users}">
+                    <p>Users</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-user"></i>
+                </div>
+            </div>
+        </div>
+        <!-- col -->
+    </div>
+</div>

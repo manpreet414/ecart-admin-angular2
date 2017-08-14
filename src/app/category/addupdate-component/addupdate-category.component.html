@@ -1,0 +1,75 @@
+<div class="category-wrapper">
+    <app-loader [isLoading]="isLoading"></app-loader>
+    <!-- loading section -->
+    <div class="aligncenter_loader" *ngIf="isPageLoading">
+        <div class="is-loading"><i class="page-loader"></i></div>
+    </div>
+    <!-- loading section ends  -->
+    <ngx-flash-messages></ngx-flash-messages>
+    <div class="card" *ngIf="!isPageLoading">
+        <div class="card-header">
+            <strong>{{categoryID ? 'Edit' : 'Add'}} Category</strong>
+        </div>
+        <form role="form" (ngSubmit)="save()" #addCatgForm="ngForm">
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group  has-required">
+                            <label for="nf-name">Name</label>
+                            <input autofocus type="text" id="name" name="name" class="form-control" #name="ngModel" [(ngModel)]="category.name" (keyup)="trim('name')"  required>
+                            <div class="error-block">
+                                <small *ngIf="name.errors?.required && name.touched" class="text-danger">
+                                    Name is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="nf-type">Type</label>
+                            <select [disabled]="categoryID" id="type" name="type" class="form-control disable" size="1" #type="ngModel" [(ngModel)]="category.type" (ngModelChange)="checkType()" required>
+                                <option value="">Please select</option>
+                                <option value="crops">Crops</option>
+                                <option value="equipments">Equipments</option>
+                                <option value="inputs">Inputs</option>
+                                <option value="blogs">Blogs</option>
+                            </select>
+                            <div class="error-block">
+                                <small *ngIf="type.errors?.required && type.touched" class="text-danger">
+                                    Type is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="category.type != 'blogs'">
+                    <div class="col-sm-6">
+                        <div class="form-group relative">
+                            <label for="nf-name">Variety</label>
+                            <input type="text" id="vname" name="vname" #vname="ngModel" (ngModelChange)="errMessage='';" class="form-control wdthset" [(ngModel)]="oBj.vname">
+                            <div class="error-block">
+                                <small *ngIf="errMessage" class="text-danger vname-valid">
+                                   {{errMessage}}
+                                </small>
+                            </div>
+                            <i (click)="addEelement()" title="Add Variety" class="fa fa-plus addimage"></i>
+                            <div class="block">
+                                <div class="chip" *ngFor="let rcd of category.variety; let i=index">
+                                    <div class="chip">{{rcd}}
+                                        <i class="close fa fa-times" (click)="removeEelement(i)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="reset" class="btn btn-secondary whiteclr" [routerLink]="['/category/list']"> Cancel</button>
+                <button type="submit" class="pull-right btn btn-primary orangeclr" [disabled]="!addCatgForm.valid">{{categoryID ? 'Update' : 'Save'}}</button>
+            </div>
+        </form>
+    </div>
+    <!-- .card -->
+</div>
+<!-- .category-wrapper -->

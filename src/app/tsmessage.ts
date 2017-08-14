@@ -1,0 +1,35 @@
+'use strict';
+
+export const CROP_UPDATED_SUCCESSFULLY                    = "Crop is updated successfully.";
+export const CROP_ADDED_SUCCESSFULLY                      = "Crop is added successfully.";
+export const RECORD_UPDATED_SUCCESSFULLY                  = "Record Updated successfully.";
+export const RECORD_ADDED_SUCCESSFULLY                    = "Record Added successfully.";
+export const NO_SUCH_USER_EXIST                           = "No such user exist.";
+export const YOUR_SESSION_HAS_EXPIRED_PLEASE_LOGIN_AGAIN  = "Your session has expired. Please login again.";
+export const YOU_ARE_NOT_AUTHORIZED_PLEASE_CONTACT_MARKET_ADMIN = "You are not authorized please contact market admin.";
+export const EMAIL_OR_PASSWORD_IS_NOT_CORRECT             = "Email or Password is not correct.";
+export const EDIT_YOUR_CONTENT_HERE                       = "Edit Your Content Here!";
+export const DELETED_SUCCESSFULLY                         = "Deleted successfully.";
+export const DO_YOU_WANT_TO_ACTIVATE_CHANNEL_PARTNER      = "Do you want to Activate Channel Partner?";
+export const DO_YOU_WANT_TO_DEACTIVATE_CHANNEL_PARTNER    = "Do you want to Deactivate Channel Partner?";
+export const EQUIPMENT_UPDATED_SUCCESSFULLY               = "Equipment Updated successfully.";
+export const PINCODE_IS_REQUIRED                          = "Pincode is required.";
+export const MINIMUM_ONE_PINCODE_IS_REQUIRED			  = "Minimum one pincode is required."
+export const MAXIMUM_6_DIGIT_ALLOW                        = " Maximum 6 digit allow.";
+export const ALREADY_EXISTS                               = "Already exists.";
+export const REASON_IS_REQUIRED                           = "Reason is required.";
+export const NAME_IS_REQUIRED                             = "Name is required.";
+export const INVALID_INPUT                                = "Invalid input.";
+export const VARIETY_IS_REQUIRED                          = "Variety is required.";
+export const EMAIL_IS_NOT_VALID                           = "Email is not valid.";
+export const MINIMUM_10_DIGIT_ALLOW                       = "Minimum 10 digit allow.";
+export const MAXIMUM_10_DIGIT_ALLOW                       = "Maximum 10 digit allow.";
+export const MOBILE_IS_NOT_VALID                          = "Mobile is not vaild";
+export const GROUP_UPDATED_SUCCESSFULLY                   = "Group Updated successfully.";
+export const PLEASE_SELECT_USER                           = "Please select user.";
+export const USER_ALREADY_ADDED_IN_THIS_GROUP             = "User already added in this group.";
+export const DO_YOU_WANT_TO_ACTIVATE_USER                 = "Do you want to Activate User?";
+export const DO_YOU_WANT_TO_DEACTIVATE_USER               = "Do you want to Deactivate User?";
+export const DO_YOU_WANT_TO_ACTIVATE_ADMIN_USER           = "Do you want to Activate Admin User?";
+export const DO_YOU_WANT_TO_DEACTIVATE_ADMIN_USER         = "Do you want to Deactivate Admin User?";
+export const SERVER_ERROR							      = "An error occcurd, please try again later.";

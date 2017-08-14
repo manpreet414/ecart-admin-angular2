@@ -1,0 +1,479 @@
+<div>
+    <app-loader [isLoading]="isLoading"></app-loader>
+    <!-- loading section -->
+    <div class="aligncenter_loader" *ngIf="isPageLoading">
+        <div class="is-loading"><i class="page-loader"></i></div>        
+    </div>
+    <!-- loading section ends  -->
+    <div class="card" *ngIf="!isPageLoading">
+        <div class="card-header">
+            <strong>{{cropID ? 'Edit' : 'Add'}} Crop</strong>
+        </div>
+        <!-- form to add or update crop -->
+        <form role="form" (ngSubmit)="save()" #addCropForm="ngForm">
+        <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="nf-name">Crop Name</label>
+                            <input autofocus type="text" id="name" name="name" class="form-control" placeholder="" minlength="3" maxlength="50" (keyup)="trim('name')" #name="ngModel" [ngModel]="crop.name  | capitalize" (ngModelChange)="crop.name=$event" required>
+                            <div class="error-block">
+                                <small *ngIf="name.errors?.required && name.touched" class="text-danger">
+                                    Crop name is required.
+                                </small>
+                                <small *ngIf="name.errors?.minlength && name.touched" class="text-danger">
+                                    Minumum length should be 3.
+                                </small>     
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="seller">Seller</label>
+                            <select id="seller" name="seller" class="form-control" size="1" #seller="ngModel" [(ngModel)]="crop.sellerID" required>
+                                <option value="">Please select</option>                                
+                                <option *ngFor="let obj of sellers" value="{{obj.id}}">
+                                    {{obj.username}}
+                                </option>       
+                            </select>
+                            <div class="error-block">
+                                <small *ngIf="seller.errors?.required && seller.touched" class="text-danger">
+                                    Seller is required.
+                                </small>                  
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required relative">
+                            <label for="nf-category">Category</label>
+                            <select id="nfcategory" name="nfcategory" class="form-control wdthset" size="1" (change)="setVarieties( cat )" #nfcategory="ngModel" [(ngModel)]="crop.categoryID" required>
+                                <option value="">Please select</option>
+                                <option *ngFor="let cat of category" value="{{cat.id}}">{{cat.name}}</option>
+                            </select>
+                             <i (click)="showPrompt()" title="Add Category" class="fa fa-plus addimage"></i>
+    
+                            <div class="error-block">
+                                <small *ngIf="nfcategory.errors?.required && nfcategory.touched" class="text-danger">
+                                    Category is required.
+                                </small>                  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">Variety</label>
+                            <select id="variety" name="variety" class="form-control" [(ngModel)]="crop.variety" size="1">
+                                <option value="">Please select</option>
+                                <option *ngFor="let variety of varieties" [value]="variety">
+                                    {{variety}}
+                                </option>                                  
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" #address="ngModel"  class="form-control" [ngModel]="crop.address  | capitalize" (ngModelChange)="crop.address=$event" minlength="3" maxlength="50" placeholder="" (keyup)="trim('address')" required />
+                            <div class="error-block">
+                                <small *ngIf="address.errors?.required && address.touched" class="text-danger">
+                                    Address is required.
+                                </small>
+                                <small *ngIf="address.errors?.pattern && address.touched" class="text-danger">
+                                    Invalid input.
+                                </small>
+                                <small *ngIf="address.errors?.minlength && address.touched" class="text-danger">
+                                    Minumum length should be 3.
+                                </small>                              
+                            </div> 
+                        </div>                                    
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="nf-city">City/Village</label>
+                            <input type="text" id="nf-city" name="city" #city="ngModel" (keyup)="trim('city')" class="form-control" [ngModel]="crop.city  | capitalize" (ngModelChange)="crop.city=$event" minlength="3" maxlength="50" placeholder="" required>
+                            <div class="error-block">
+                                <small *ngIf="city.errors?.required && city.touched" class="text-danger">
+                                    City/Village is required.
+                                </small>
+                                <small *ngIf="city.errors?.minlength && city.touched" class="text-danger">
+                                    Minumum length should be 3.
+                                </small>
+                            </div> 
+                        </div>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="state">State</label>
+                            <select id="state" name="state" (change)="setDistrict();crop.district='';"  [(ngModel)]="crop.state" placeholder="" required class="form-control" size="1" #state="ngModel" required>
+                                <option value="">Please select</option>
+                                <option *ngFor="let state of states" [value]="state.stateName">
+                                    {{state.stateName}}
+                                </option>                               
+                            </select>
+                            <div class="error-block">
+                                <small *ngIf="state.errors?.required && state.touched" class="text-danger">
+                                    State is required.
+                                </small>            
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="district">District</label>
+                            <select id="district" name="district" [disabled]="!crop.state" [(ngModel)]="crop.district" placeholder="" required class="form-control disable" size="1" #district="ngModel" required>
+                                <option value="">Please select</option>
+                                <option *ngFor="let district of districts" [value]="district.districtName">
+                                    {{district.districtName}}
+                                </option>                              
+                            </select>
+                            <div class="error-block">
+                                <small *ngIf="district.errors?.required && district.touched" class="text-danger">
+                                    District is required.
+                                </small>           
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="nf-pincode">Pin Code </label>
+                            <input type="number" id="nf-pincode" name="pincode" #pincode="ngModel" class="form-control" [(ngModel)]="crop.pincode"  (keydown.space)="$event.preventDefault()" min="100000" max="999999" placeholder="" required>
+                            <div class="error-block">
+                                <small *ngIf="pincode.errors?.required && pincode.touched" class="text-danger">
+                                    Pin Code is required.
+                                </small>                                
+                                <small *ngIf="pincode.errors?.min && pincode.touched" class="text-danger">
+                                    Minimum 6 digit allow.
+                                </small>                                
+                                <small *ngIf="pincode.errors?.max && pincode.touched" class="text-danger">
+                                    Maximum 6 digit allow.
+                                </small>             
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                         <label for="nf-qty">Quantity</label>
+                          <div class="flex">
+                              <input type="number" id="quantity" name="quantity" class="form-control" aria-label="Text input with dropdown button" #quantity="ngModel" [(ngModel)]="crop.quantity" min="1" max="9999999999999998" placeholder="" required>
+                               <div class="input-group-btn">
+                                  <select id="select4" name="select4" class="btn btn-secondary dropdown-toggle" [(ngModel)]="crop.quantityUnit" required>
+                                    <option value="Kgs">Kgs</option>
+                                    <option value="MT">MT</option>
+                                    <!-- <option value="Tonnes">Tonnes</option> -->
+                                    <!-- <option value="Count">Count</option> -->
+                                    <!-- <option value="Dozen">Dozen</option> -->
+                                 </select>
+                              </div>
+                            </div>
+                            <div class="error-block">
+                                <small *ngIf="quantity.errors?.required && quantity.touched" class="text-danger">
+                                    Quantity is required.
+                                </small>
+                                <small *ngIf="quantity.errors?.min && quantity.touched" class="text-danger">
+                                    Minimum quantity should be 1.
+                                </small>                                                          
+                                <small *ngIf="quantity.errors?.max && quantity.touched" class="text-danger">
+                                    Maximum quantity is allow upto 16 digit.
+                                </small> 
+                            </div>                       
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="quantity">Quantity</label>
+                            <select id="quantity" [(ngModel)]="units" name="quantity" (change)="setQuantity()" #quantity="ngModel" placeholder="" required class="form-control disable" size="1">
+                                <option value="" selected>Please select</option>
+                                <option *ngFor="let qty of quantities" [value]="qty">{{qty}}</option>                              
+                            </select>
+                            <div class="error-block">
+                                <small *ngIf="quantity.errors?.required && quantity.touched" class="text-danger">
+                                    Quantity is required.
+                                </small>           
+                            </div> 
+                        </div>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="nf-price">Offer Price</label>
+                            <div class="relative">
+                            <div class="icnposition"><i class="fa fa-rupee"></i></div>
+                            <input type="number" id="nfprice" name="nfprice" class="form-control pleft25" #nfprice="ngModel" [(ngModel)]="crop.price"  (keydown.space)="$event.preventDefault()" (ngModelChange)="onPriceChange()" oninput="validity.valid||(value='');" step="0.01" placeholder="" required="" min="1" max="9999999999999998">
+                            </div>
+                            <div class="error-block">
+                                <small *ngIf="nfprice.errors?.required && nfprice.touched" class="text-danger">
+                                    Offer Price is required.
+                                </small>
+                                <small *ngIf="nfprice.errors?.min && nfprice.touched" class="text-danger">
+                                    Minimum offer price should be 1.
+                                </small>              
+                                <small *ngIf="nfprice.errors?.max && nfprice.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small>               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-grade">Quality</label>
+                            <form class="grade">
+                                <div class="btn-group" data-toggle="">
+                                   <label class="btn btn-default" [ngClass]="{'active': crop.grade == 'A+'}">
+                                          <input name="grade" value="A+" type="radio" [(ngModel)]="crop.grade" >A+
+                                    </label>
+                                    <label class="btn btn-default" [ngClass]="{'active': crop.grade == 'A'}">
+                                         <input name="grade" value="A" type="radio" [(ngModel)]="crop.grade">A
+                                    </label>
+                                    <label class="btn btn-default" [ngClass]="{'active': crop.grade == 'B'}">
+                                       <input name="grade" value="B" type="radio" [(ngModel)]="crop.grade">B
+                                    </label>
+                                    <label class="btn btn-default" [ngClass]="{'active': crop.grade == 'C'}">
+                                        <input name="grade" value="C" type="radio" [(ngModel)]="crop.grade">C
+                                    </label>
+                                    <label class="btn btn-default" [ngClass]="{'active': crop.grade == 'D'}">
+                                        <input name="grade" value="D" type="radio" [(ngModel)]="crop.grade">D
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="availablefrom">Available From </label>
+                            <div class="input-group">
+
+                                <input readonly class="form-control" id="availableFrom" style="float:none" placeholder="dd/mm/yyyy" ngx-mydatepicker name="availableFrom"
+                                      #availableFrom="ngModel"  [(ngModel)]="crop.availableFrom" [options]="myOptions" #dp="ngx-mydatepicker" (dateChanged)="onDateChanged($event)" required>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default noborderradius" (click)="dp.toggleCalendar()">
+                                        <i class="fa fa-calendar-plus-o"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="error-block">
+                                <small *ngIf="availableFrom.errors?.required && availableFrom.touched" class="text-danger">
+                                   Available From is required.
+                                </small>             
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                         <label for="nf-qty">Availability Period</label>
+                          <div class="flex">
+                              <input type="number" id="availablePeriod" name="availablePeriod" class="form-control" aria-label="Text input with dropdown button" #availablePeriod="ngModel" [(ngModel)]="crop.availablePeriod"  (keydown.space)="$event.preventDefault()" oninput="validity.valid||(value='');" min="1" max="9999999999999998" placeholder="" required>
+                               <div class="input-group-btn">
+                                  <select id="select5" name="select5" class="btn btn-secondary dropdown-toggle" [(ngModel)]="crop.availableUnit">
+                                    <option value="Days">Days</option>
+                                    <option value="Month">Month</option>
+                                    <option value="Year">Year</option>
+                                 </select>
+                              </div>
+                            </div>
+                            <div class="error-block">
+                                <small *ngIf="availablePeriod.errors?.required && availablePeriod.touched" class="text-danger">
+                                    Available Period is required.
+                                </small>
+                                <small *ngIf="availablePeriod.errors?.min && availablePeriod.touched" class="text-danger">
+                                    Minimum 1 Day is required.
+                                </small>                                                          
+                                <small *ngIf="availablePeriod.errors?.max && availablePeriod.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small> 
+                            </div>                       
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="nf-minBidAmount">Minimum Bidding Amount</label>
+                            <input type="number" id="nf-minBidAmount" name="minBidAmount" #minBidAmount="ngModel" class="form-control" [(ngModel)]="crop.minBidAmount"  (keydown.space)="$event.preventDefault()" oninput="validity.valid||(value='');" min="1" max="9999999999999998" step="0.01" placeholder="" required>
+                            <div class="error-block">
+                                <small *ngIf="minBidAmount.errors?.required && minBidAmount.touched" class="text-danger">
+                                    Minimum Bidding Amount is required.
+                                </small>                                
+                                <small *ngIf="minBidAmount.errors?.min && minBidAmount.touched" class="text-danger">
+                                    Minimum value should be 1.
+                                </small>                                
+                                <small *ngIf="minBidAmount.errors?.max && minBidAmount.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small>              
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                            <label for="availablefrom">Bid End Date</label>
+                            <div class="input-group">
+                                <input readonly class="form-control" id="bidEndDate" style="float:none" placeholder="dd/mm/yyyy" ngx-mydatepicker name="bidEndDate"
+                                      #bidEndDate="ngModel"  [(ngModel)]="crop.bidEndDate" [options]="myOptions" #dp1="ngx-mydatepicker" (dateChanged)="onDateChanged($event)" required>
+                                <span class="input-group-btn">
+                                    <!-- <button type="button" class="btn btn-default" (click)="dp1.clearDate()">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </button> -->
+                                    <button type="button" class="btn btn-default noborderradius" (click)="dp1.toggleCalendar()">
+                                        <i class="fa fa-calendar-plus-o"></i> 
+                                    </button>
+                                </span>
+                             </div>
+                            <div class="error-block">
+                                <small *ngIf="bidEndDate.errors?.required && bidEndDate.touched" class="text-danger">
+                                   Bid End Date is required.
+                                </small>             
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="availablefrom">Bid End Date (dd/mm/yyyy)</label>
+                            <div class="input-group form-control">
+                                <ng2-datepicker [options]="options" id="bidEndDate" name="bidEndDate" [(ngModel)]="crop.bidEndDate"></ng2-datepicker>
+                             </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                         <label for="nf-qty">Earnest Amount</label>
+                            <div class="relative">
+                            <div class="icnposition"><i class="fa fa-rupee"></i></div>
+                            <input type="number" id="bidEarnestAmount" name="bidEarnestAmount" class="form-control pleft25" aria-label="Text input with dropdown button" #bidEarnestAmount="ngModel" [(ngModel)]="crop.bidEarnestAmount"  (keydown.space)="$event.preventDefault()" oninput="validity.valid||(value='');" (keyup)="onEarnestAmtChange()" min="0" max="9999999999999998" step="0.01" placeholder="" required>
+                            </div>
+                            <div class="error-block">
+                                <small *ngIf="bidEarnestAmount.errors?.required && bidEarnestAmount.touched" class="text-danger">
+                                    Earnest Amount is required.
+                                </small>
+                                <small *ngIf="bidEarnestAmount.errors?.min && bidEarnestAmount.touched" class="text-danger">
+                                    Minimum Earnest Amount should be 1.
+                                </small>                                                          
+                                <small *ngIf="bidEarnestAmount.errors?.max && bidEarnestAmount.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small> 
+                            </div>                       
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                         <label for="nf-qty">Minimum Bidding Quantity</label>
+                          <div class="flex">
+                              <input type="number" id="minBidQuantity" name="minBidQuantity" class="form-control" aria-label="Text input with dropdown button" #minBidQuantity="ngModel" [(ngModel)]="crop.minBidQuantity"  (keydown.space)="$event.preventDefault()" (keyup)="crop.minBidQuantity > crop.quantity ? crop.minBidQuantity=crop.quantity:''" oninput="validity.valid||(value='');" step="0.01" placeholder="">
+                            </div>
+                            <!-- <div class="error-block">
+                                <small *ngIf="minBidQuantity.errors?.required && minBidQuantity.touched" class="text-danger">
+                                    Minmum Bidding Quantity is required.
+                                </small>
+                                <small *ngIf="minBidQuantity.errors?.min && minBidQuantity.touched" class="text-danger">
+                                    Minimum Bidding Quantity should be 1.
+                                </small>                                                          
+                                <small *ngIf="minBidQuantity.errors?.max && minBidQuantity.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small> 
+                            </div> -->                       
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                         <label for="nf-qty">Tax Rate (%)</label>
+                            <input type="number" id="taxRate" name="taxRate" class="form-control" aria-label="Text input with dropdown button" #taxRate="ngModel" [(ngModel)]="crop.taxRate"  (keydown.space)="$event.preventDefault()" oninput="validity.valid||(value='');" step="0.01" min="0" max="9999999999999998" placeholder="" required>
+                            <div class="error-block">
+                                <small *ngIf="taxRate.errors?.required && taxRate.touched" class="text-danger">
+                                    Tax Rate is required.
+                                </small>
+                                <small *ngIf="taxRate.errors?.min && taxRate.touched" class="text-danger">
+                                    Minimum Tax Rate should be 0.
+                                </small>                                                          
+                                <small *ngIf="taxRate.errors?.max && taxRate.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small> 
+                            </div>                       
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-required">
+                         <label for="nf-qty">Efarm Commision (%)</label>
+                            <input type="number" id="efarmxComission" name="efarmxComission" class="form-control" aria-label="Text input with dropdown button" #efarmxComission="ngModel" [(ngModel)]="crop.efarmxComission"  (keydown.space)="$event.preventDefault()" oninput="validity.valid||(value='');" min="0" max="9999999999999998" step="0.01" placeholder="" required>
+                            <div class="error-block">
+                                <small *ngIf="efarmxComission.errors?.required && efarmxComission.touched" class="text-danger">
+                                    Efarm Commision is required.
+                                </small>
+                                <small *ngIf="efarmxComission.errors?.min && efarmxComission.touched" class="text-danger">
+                                    Minimum Efarm Commision should be 0.
+                                </small>                                                          
+                                <small *ngIf="efarmxComission.errors?.max && efarmxComission.touched" class="text-danger">
+                                    Maximum 16 digit allow.
+                                </small> 
+                            </div>                       
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="blocklabel" for="nf-image" title="You can upload maximum 5 images">Images <small>(Max. 5)</small></label>
+                            <input [disabled]="!crop.images || crop.images.length==5" #myInput type="file" name="file-7[]" id="file-7" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" imageUpload
+                (imageSelected)="uploadImage($event)"
+                 accept="image/jpg, image/jpeg, image/png"/>
+                            <label for="file-7"> <strong><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> Upload image</strong></label>
+                            <!-- <i class="fa fa-plus addimage"></i> -->
+                              <div class="thumbnail pointer-custom" *ngFor="let image of crop.images" (click)="viewImage(_host+'/images/crops/'+image)">
+                            <img src="{{_host}}/images/crops/thumbnail/200/{{image}}">
+                            <i class="close fa fa-times" (click)="removeImage(image)"></i>
+                        </div>
+                        </div>
+                      
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="blocklabel" for="nf-image1" title="">Document</label>
+                            <input #myInput1 type="file" name="file-71[]" id="file-71" class="inputfile inputfile-6" data-multiple-caption="{count} files selected" imageUpload
+                (imageSelected)="uploadDocument($event)"
+                 accept="image/jpg, image/jpeg, image/png"/>
+                            <label for="file-71"> <strong><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> Upload image</strong></label>
+                            <!-- <i class="fa fa-plus addimage"></i> -->
+                              <div class="thumbnail pointer-custom" *ngFor="let image of crop.documents" (click)="viewImage(_host+'/docs/crops/'+image)">
+                            <img src="{{_host}}/docs/crops/thumbnail/{{image}}">
+                            <i class="close fa fa-times" (click)="removeDocument(image)"></i>
+                        </div>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 ">
+                        <div class="form-group">
+                            <label for="nf-description">Description</label>
+                            <textarea type="text" id="description" name="description" class="form-control" [(ngModel)]="crop.description" (keyup)="trim('description')" placeholder="" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-terms">Terms & Conditions</label>
+                            <textarea type="text" id="nfterms" name="nfterms" class="form-control" [(ngModel)]="crop.terms" placeholder="" (keyup)="trim('terms')" rows="4"></textarea> 
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <div class="card-footer">
+                    <button type="reset" class="btn btn-secondary whiteclr" [routerLink]="['/crops/list']"> Cancel</button>
+                    <button type="submit" class="pull-right btn btn-primary orangeclr" [disabled]="!addCropForm.valid">{{cropID ? 'Update' : 'Save'}}</button>
+                </div>
+          </form>
+    </div>
+</div>

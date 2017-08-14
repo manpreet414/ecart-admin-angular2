@@ -1,0 +1,51 @@
+<div class="category-wrapper">
+    <!-- loading section -->
+    <div class="aligncenter_loader" *ngIf="isLoading">
+        <div class="is-loading"><i class="page-loader"></i></div>
+    </div>
+    <!-- section ends  -->
+    <div class="card" *ngIf="!isLoading">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-3 col-12">
+                    <strong>View Category</strong>
+                </div>
+                <div class="col-sm-9 col-12 text-right linehght">
+                    <button type="button" class="btn btn-secondary" [routerLink]="['/category/list']">Back</button>
+                    <button *ngIf="addEditDelete" type="button" class="btn btn-success pull-right" (click)="edit(category.id)">Edit</button>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="card-block viewmode">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="nf-name">Name</label>
+                        <p>{{category.name}}</p>
+                    </div>
+                </div>
+                 <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="nf-name">Type</label>
+                        <p>{{category.type | uppercase}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="category.type != 'blogs'">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="nf-name">Variety</label>
+                        <div class="block">
+                        <span *ngIf="category.variety.length <= 0 ">-</span>
+                        <div class="chip" *ngFor="let rcd of category.variety; let i=index"  >
+                                <div class="chip">{{rcd}}</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .card -->
+</div>
+<!-- .category-wrapper -->

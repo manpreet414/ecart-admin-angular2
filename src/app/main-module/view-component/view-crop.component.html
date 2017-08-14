@@ -1,0 +1,220 @@
+<div>
+    <app-loader [isLoading]="isLoading"></app-loader>
+    <!-- loading section -->
+    <div class="aligncenter_loader" *ngIf="isPageLoading">
+        <div class="is-loading"><i class="page-loader"></i></div>        
+    </div>
+    <!-- section ends  -->
+    <div class="card"  *ngIf="!isPageLoading">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-6 col-12">
+                   <strong>View Crop</strong><strong title="Crop ID"> - {{crop.code}}</strong>           
+                </div>
+                <div class="col-sm-6 col-12 text-right linehght">
+                    <button type="button" class="btn btn-secondary" [routerLink]="['/crops/list']">Back</button>  
+                   
+                    <button *ngIf="addEditDelete && crop.highestBid" type="button" class="btn btn-danger ml-6 orange" [routerLink]="['/crops/bids/'+crop.id]">Bids</button>
+
+                    <button *ngIf="addEditDelete" type="button" class="btn btn-success pull-right" (click)="editCrop(crop.id)">Edit Crop</button> 
+                                             &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="card-block viewmode">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-name">Crop Name</label>
+							<p>{{crop.name}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-password">Seller</label>
+							<p>{{crop.seller ? crop.seller?.fullName : '-'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">Category</label>
+							<p>{{crop.category?.name}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">Variety</label>
+                            <p>{{crop.variety ? crop.variety :'-'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">Address</label>
+                            <p>{{crop.address}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">City</label>
+                            <p>{{crop.city}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">State</label>
+                            <p>{{crop.state}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">District</label>
+                            <p>{{crop.district}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-variety">Pin Code</label>
+                            <p>{{crop.pincode}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-price">Quantity</label>
+                            <p>{{crop.quantity}} {{crop.quantityUnit}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-price">Offer Price</label>
+                            <p> {{crop.price | currency:'INR':true}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-grade">Quality</label>
+                            <p>{{crop.grade ? crop.grade : '-'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-size">Available From</label>
+							<p>{{crop.availableFrom | date: _dateFormat}}<span *ngIf="!crop.availableFrom">-</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-availibility">Availability Period</label>
+                            <p>{{crop.availablePeriod ? crop.availablePeriod : '-'}} {{crop.availablePeriod ? crop.availableUnit : ''}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-supplyAbility">Minimum Bid Amount</label>
+                            <p>{{crop.minBidAmount  | currency:'INR':true}}<span *ngIf="!crop.minBidAmount">-</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-supplyAbility">Bid End Date</label>
+                            <p>{{crop.bidEndDate | date: _dateFormat}}<span *ngIf="!crop.bidEndDate">-</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-supplyAbility">Earnest Amount</label>
+                            <p>{{crop.bidEarnestAmount | currency:'INR':true}}<span *ngIf="!crop.bidEarnestAmount">-</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-supplyAbility">Minimum Bid Quantity</label>
+                            <p>{{crop.minBidQuantity}} {{crop.bidQuantityUnit}}<span *ngIf="!crop.minBidQuantity">-</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-supplyAbility">Tax Rate (%)</label>
+                            <p>{{crop.taxRate}}<span *ngIf="!crop.taxRate">-</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-supplyAbility">Efarm Commision (%)</label>
+                            <p>{{crop.efarmxComission}}<span *ngIf="!crop.efarmxComission">-</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-averageLeadTime">Verified</label>
+                            <p>{{crop.verified}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-averageLeadTime">Description</label>
+                            <p>{{crop.description ? crop.description : '-'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nf-averageLeadTime">Highest Bid</label>
+                            <p><i *ngIf="crop?.highestBid" class="fa fa-rupee"></i>{{crop?.highestBid ? crop?.highestBid : '-' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="blocklabel" for="nf-image">Image</label>
+                       
+                            <div class="thumbnail" *ngIf="!crop.images || !crop.images[0]">
+                                <img src="http://www.vacationrentalestates.com/images/no-image-available2.jpg"> 
+                            </div>
+                            <div class="thumbnail pointer-custom" *ngFor="let image of crop.images" (click)="viewImage(_host+'/images/crops/'+image)">
+                                <img src="{{_host}}/images/crops/thumbnail/200/{{image}}">
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="blocklabel" for="nf-document">Document</label>
+                       
+                            <div class="thumbnail" *ngIf="!crop.documents || !crop.documents[0]">
+                                <img src="http://www.vacationrentalestates.com/images/no-image-available2.jpg"> 
+                            </div>
+                            <div class="thumbnail pointer-custom" *ngFor="let image of crop.documents" (click)="viewImage(_host+'/docs/crops/'+image)">
+                                <img src="{{_host}}/docs/crops/thumbnail/{{image}}">
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            
+        </div>
+		<div class="card-footer">
+			  <button *ngIf="addEditDelete && crop.verified == 'No' && !crop.isExpired" type="button" class="btn btn-success btn-lg" (click)="changeStatus(crop.id,'verify')">Verify Crop</button> 
+              <button *ngIf="addEditDelete && !crop.isExpired" type="button" class="btn btn-success btn-lg pull-right" (click)="changeStatus(crop.id,'close')">Close Crop</button> 
+		</div>
+    </div>   
+</div>
